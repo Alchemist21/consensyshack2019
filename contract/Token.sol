@@ -2,7 +2,8 @@ pragma solidity ^0.5.0;
 
 contract Token {
    address public owner;
-   
+   string public token_name;
+   string public token_symbol;
    uint public total_supply ;
 
    mapping(address => uint) public  balance;
@@ -17,8 +18,11 @@ contract Token {
        _;
    }
 
-   constructor() public{
+   constructor(string memory name, string memory symbol) public{
        owner = msg.sender;
+       token_name = name;
+       token_symbol =symbol;
+
    }
 
    function _mint(address x, uint amount) external isOwner notNull(x){
