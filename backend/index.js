@@ -58,6 +58,17 @@ const burn = async (addr, amount) => {
 
 // web3.stop();
 
+server.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 const bodyParser = require('body-parser');
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -98,6 +109,6 @@ server.get(api + '/total', async (req, res) => {
   res.json({ "total: ": t });
 });
 
-server.listen(8080, () => {
-  console.log('Server running on port 8080');
+server.listen(8081, () => {
+  console.log('Server running on port 8081');
 });
