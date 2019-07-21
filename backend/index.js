@@ -74,7 +74,7 @@ server.put(api + '/mint/:addr/:amount', async (req, res) => {
   const addr = req.params.addr;
   const amount = req.params.amount;
   await mint(addr, amount);
-  res.join({ addr, amount });
+  res.json({ addr, amount });
 });
 
 server.put(api + '/transfer/:amount/:from_addr/:to_addr', async (req, res) => {
