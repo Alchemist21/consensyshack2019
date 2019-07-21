@@ -14,9 +14,8 @@ const provider = new HDWalletProvider(
 );
 
 const web3 = new Web3(provider.engine);
-
 const { abi } = require('./Token');
-const D_ADDR = '0x274b3d251c78f9199c950e21df2bd459694d880b';
+const D_ADDR = '0x1523a50c9a42dd1E8812022686Ed873F0e795372';
 const Token = new web3.eth.Contract(abi, D_ADDR);
 
 const getBalance = async x => {
@@ -29,8 +28,10 @@ const total = async () => {
   const supply = await Token.methods.total_supply.call();
   return parseInt(supply, 10);
 };
+
 const mint = async (addr, amount) => {
   const accounts = await web3.eth.getAccounts();
+
   await Token.methods
     ._mint(addr, amount)
     .send({ from: accounts[0], gas: '1000000' });
@@ -73,8 +74,7 @@ server.put(api + '/mint/:addr/:amount', async (req, res) => {
   const addr = req.params.addr;
   const amount = req.params.amount;
   await mint(addr, amount);
-  let balance = await getBalance(addr);
-  res.json({ addr, balance });
+  res.join({ addr, amount });
 });
 
 server.put(api + '/transfer/:amount/:from_addr/:to_addr', async (req, res) => {
@@ -95,7 +95,7 @@ server.put(api + '/redeem/:addr/:amount', async (req, res) => {
 
 server.get(api + '/total', async (req, res) => {
   let t = await total();
-  res.json({ "total: ": t });
+  res.json({ 'total: ': t });
 });
 
 server.listen(8080, () => {
